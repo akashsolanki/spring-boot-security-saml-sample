@@ -261,7 +261,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements I
         return idpDiscovery;
     }
     
-	@Bean
+	/*@Bean
 	@Qualifier("idp-ssocircle")
 	public ExtendedMetadataDelegate ssoCircleExtendedMetadataProvider()
 			throws MetadataProviderException {
@@ -275,13 +275,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements I
 		extendedMetadataDelegate.setMetadataRequireSignature(false);
 		backgroundTaskTimer.purge();
 		return extendedMetadataDelegate;
-	}
+	}*/
 
 	@Bean
     @Qualifier("idp-keycloak")
     public ExtendedMetadataDelegate keycloakExtendedMetadataProvider(Environment env)
             throws MetadataProviderException {
-        String idpKeycloakMetadataURL = env.getRequiredProperty("keycloak.auth-server-url") + "/protocol/saml/descriptor";
+        String idpKeycloakMetadataURL = "http://ip172-18-0-28-c0598vplo55000fsjvg0-8080.direct.labs.play-with-docker.com/auth/realms/demo/protocol/saml/descriptor";//env.getRequiredProperty("keycloak.auth-server-url") + "/protocol/saml/descriptor";
         HTTPMetadataProvider httpMetadataProvider = new HTTPMetadataProvider(
                 this.backgroundTaskTimer, httpClient(), idpKeycloakMetadataURL);
         httpMetadataProvider.setParserPool(parserPool());
@@ -306,7 +306,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements I
     @Bean
     public MetadataGenerator metadataGenerator() {
         MetadataGenerator metadataGenerator = new MetadataGenerator();
-        metadataGenerator.setEntityId("com:vdenotaris:spring:sp");
+        metadataGenerator.setEntityId("login-app-one");
         metadataGenerator.setExtendedMetadata(extendedMetadata());
         metadataGenerator.setIncludeDiscoveryExtension(false);
         metadataGenerator.setKeyManager(keyManager()); 
